@@ -1,0 +1,130 @@
+//Experiment 9:Leaky Bucket Algorithm 
+
+#include<stdio.h>
+#include <stdlib.h>
+struct packet
+{
+    int time;
+    int size;
+} p[50];
+int main()
+{
+    int i, n, m, k = 0;
+    int bsize, bfilled, outrate;
+    printf("Enter the number of packets:");
+    scanf("%d", &n);
+    printf("Enter packets in the order of their arrival time\n");
+    for (i = 0; i < n; i++)
+    {
+        printf("Enter the time and size:");
+        scanf("%d%d", &p[i].time, &p[i].size);
+    }
+    printf("Enter the bucket size:");
+    scanf("%d", &bsize);
+    printf("Enter the output rate:");
+    scanf("%d", &outrate);
+
+    m = p[n - 1].time;
+    i = 1;
+    k = 0;
+    bfilled = 0;
+    while (i <= m || bfilled != 0)
+    {
+        printf("\n\nAt time %d", i);
+
+        if (p[k].time == i)
+        {
+            if (bsize >= bfilled + p[k].size)
+            {
+                bfilled = bfilled + p[k].size;
+                printf("\n%dbyte packet is inserted", p[k].size);
+                k = k + 1;
+            }
+            else
+            {
+                printf("\n%dbyte packet is discarded", p[k].size);
+                k = k + 1;
+            }
+       
+        }
+
+    if (bfilled == 0)
+    {
+        printf("\nNo packets to transmitte");
+    }
+    else if (bfilled >= outrate)
+    {
+        bfilled = bfilled - outrate;
+        printf("\n%dbytes transfered", outrate);
+    }
+
+    else
+    {
+        printf("\n%dbytes transfered", bfilled);
+        bfilled = 0;
+    }
+    printf("\nPackets in the bucket%dbyte", bfilled);
+    i++;
+    }
+    return 0;
+}
+/*output
+Enter the number of packets:4
+Enter packets in the order of their arrival time
+Enter the time and size:1 100
+Enter the time and size:2 30
+Enter the time and size:4 40
+Enter the time and size:5 70
+Enter the bucket size:200
+Enter the output rate:20
+At time 1
+100byte packet is inserted
+20bytes transfered
+Packets in the bucket80byte
+
+At time 2
+30byte packet is inserted
+20bytes transfered
+Packets in the bucket90byte
+
+At time 3
+20bytes transfered
+Packets in the bucket70byte
+
+At time 4
+40byte packet is inserted
+20bytes transfered
+Packets in the bucket90byte
+
+At time 5
+70byte packet is inserted
+20bytes transfered
+Packets in the bucket140byte
+
+At time 6
+20bytes transfered
+Packets in the bucket120byte
+
+At time 7
+20bytes transfered
+Packets in the bucket100byte
+
+At time 8
+20bytes transfered
+Packets in the bucket80byte
+
+At time 9
+20bytes transfered
+Packets in the bucket60byte
+
+At time 10
+20bytes transfered
+Packets in the bucket40byte
+
+At time 11
+20bytes transfered
+Packets in the bucket20byte
+
+At time 12
+20bytes transfered
+Packets in the bucket0byte */
