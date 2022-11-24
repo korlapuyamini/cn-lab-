@@ -1,0 +1,98 @@
+//Experiment 10: Dijkstra’s Algorithm
+
+#include<stdio.h>
+#include<stdlib.h>
+#define infinity 999
+void dij(int n,int s,int cost[10][10],int dist[10])
+{
+int i,j,count,k,flag[10],min;
+for(i=1;i<=n;i++)
+ {
+ flag[i]=0;
+ dist[i]=cost[s][i];
+ }
+count=2;
+while(count<=n)
+{
+min=infinity;
+for(k=1;k<=n;k++)
+if(dist[k]<min && !flag[k])
+ {
+ min=dist[k];
+ j=k;
+ }
+flag[j]=1;
+count++;
+for(k=1;k<=n;k++)
+if((dist[j]+cost[j][k]<dist[k]) && !flag[k])
+ dist[k]=dist[j]+cost[j][k];
+ }
+}
+void main()
+{
+int n,s,d,i,j,cost[10][10],dist[10];
+
+printf("\n Enter the no.of nodes");
+scanf("%d",&n);
+printf("\n Enter the cost matrix");
+for(i=1;i<=n;i++)
+for(j=1;j<=n;j++)
+{
+ printf(" Cost of node[%d] to node [%d] is:",i,j);
+ scanf("%d",&cost[i][j]);
+ if(cost[i][j]==0)
+ cost[i][j]=infinity;
+ }
+printf("Enter source node");
+scanf("%d",&s);
+printf("Enter destination node");
+scanf("%d",&d);
+dij(n,s,cost,dist);
+printf("\n shortest path:\n");
+printf("%d->%d,cost=%d\n",s,d,dist[d]);
+
+}
+
+/*output
+
+Enter the no.of nodes6
+Enter the cost matrix Cost of node[1] to node [1] is:0
+Cost of node[1] to node [2] is:3
+Cost of node[1] to node [3] is:2
+Cost of node[1] to node [4] is:5
+Cost of node[1] to node [5] is:0
+Cost of node[1] to node [6] is:0
+Cost of node[2] to node [1] is:3
+Cost of node[2] to node [2] is:0
+Cost of node[2] to node [3] is:0
+Cost of node[2] to node [4] is:1
+Cost of node[2] to node [5] is:4
+Cost of node[2] to node [6] is:0
+Cost of node[3] to node [1] is:2
+Cost of node[3] to node [2] is:0
+Cost of node[3] to node [3] is:0
+Cost of node[3] to node [4] is:2
+Cost of node[3] to node [5] is:0
+Cost of node[3] to node [6] is:1
+Cost of node[4] to node [1] is:5
+Cost of node[4] to node [2] is:1
+Cost of node[4] to node [3] is:2
+Cost of node[4] to node [4] is:0
+Cost of node[4] to node [5] is:3
+Cost of node[4] to node [6] is:0
+Cost of node[5] to node [1] is:0
+Cost of node[5] to node [2] is:4
+Cost of node[5] to node [3] is:0
+Cost of node[5] to node [4] is:1
+Cost of node[5] to node [5] is:2
+Cost of node[5] to node [6] is:3
+Cost of node[6] to node [1] is:0
+Cost of node[6] to node [2] is:0
+Cost of node[6] to node [3] is:1
+Cost of node[6] to node [4] is:0
+Cost of node[6] to node [5] is:3
+Cost of node[6] to node [6] is:0
+Enter source node1
+Enter destination node6
+shortest path:
+1->6,cost=3*/
