@@ -1,0 +1,51 @@
+//Experiment 6:Sliding Window Protocol
+
+#include<stdio.h>
+int main()
+{
+	int window_size,sent=0,ack,i;
+	printf(“Enter the window size\n”);
+	scanf("%d",&window_size);
+	while(1)
+	{
+		for(i=0;i<window_size;i++)
+		{
+			printf("Frame %d Has beed transmitted\n",sent);
+			sent++;
+			if(sent==window_size)
+			{
+				break;
+			}
+		}
+	printf("\n please enter the last acknowledgement received\n");
+	scanf("%d",&ack);	
+			if(ack==window_size)
+			{
+				printf("All frames has been sent");
+				break; 
+			}
+			else
+			{
+				sent=ack;
+			}
+		
+	}
+return 0;
+}
+/*output
+Enter the window size
+5
+Frame 0 Has beed transmitted
+Frame 1 Has beed transmitted
+Frame 2 Has beed transmitted
+Frame 3 Has beed transmitted
+Frame 4 Has beed transmitted
+
+ please enter the last acknowledgement received
+3
+Frame 3 Has beed transmitted
+Frame 4 Has beed transmitted
+
+ please enter the last acknowledgement received
+5
+All frames has been sent*/
