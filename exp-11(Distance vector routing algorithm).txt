@@ -1,0 +1,81 @@
+//Experiment 11: Distance Vector Routing Algorithm 
+
+#include<stdio.h>
+
+struct node
+ {
+    int dist[20];
+    int from[20];
+} route[10];
+
+int main()
+{
+    int dm[20][20],no,i,j,k,flag;
+    
+    printf("Enter no of nodes." );
+    scanf("%d",&no);
+    printf("Enter the distance matrix:\n");
+    for (i = 0; i < no; i++)
+     {
+	for (j = 0; j < no; j++)
+	  {
+	    scanf("%d",&dm[i][j]);
+	    /*  Set distance from i to i as 0 */
+	    dm[i][i] = 0;
+	    route[i].dist[j] = dm[i][j];
+	    route[i].from[j] = j;
+	}
+    }
+    do {
+	flag = 0;
+	for (i = 0; i < no; i++)
+	{
+	    for ( j = 0; j < no;j++)
+	     {
+		for ( k = 0; k < no; k++)
+		 {
+		    if ((route[i].dist[j]) > (route[i].dist[k] + route[k].dist[j])) {
+			route[i].dist[j] = route[i].dist[k] + route[k].dist[j];
+			route[i].from[j] = k;
+			flag = 1;
+		    }
+		}
+	    }
+	}
+    } while (flag);
+
+    for (i = 0; i < no; i++)
+     {
+	printf("Router info for router: %d\n",  i + 1);
+	printf("\nDest\tnext hop\tdist\n");
+	for ( j = 0; j < no; j++)
+	    printf("%d\t%d\t\t%d\n", j+1, route[i].from[j]+1, route[i].dist[j]);
+    }
+    return 0;
+    
+}
+
+/* output
+Enter no of nodes.3
+Enter the distance matrix:
+0 2 7
+2 0 1 
+7 1 0 
+Router info for router: 1
+
+Dest	next hop	dist
+1	1		0
+2	2		2
+3	2		3
+Router info for router: 2
+
+Dest	next hop	dist
+1	1		2
+2	2		0
+3	3		1
+Router info for router: 3
+
+Dest	next hop	dist
+1	2		3
+2	2		1
+3	3		0 */
