@@ -1,0 +1,70 @@
+//Experiment 7 :Sliding Window Protocol
+
+#include<stdio.h>
+int receiver_ack(int f,int n)
+{
+    int i=f-(n-1),ack,sel=-1;
+    while(i<n)
+    {
+        printf("Frame %d is received or not if it is received press1 or press  0",i+1);
+        scanf("%d",&ack);
+        if (ack==0)
+        {
+            sel=i;
+            break;
+        }
+        i++;
+    }
+    return sel;
+}
+void resend(int sel)
+{
+    printf("frame:%d Resended sucessfully \n",sel+1);
+}
+void sender(int n,int window_size)
+{
+    int count=1,sl,wz,i;
+    wz=window_size;
+    printf("sender start sending the frames \n");
+    for(i=0;i<n;i++)
+    {
+        
+        printf("frame:%d is sender to received \n ",i+1);
+        if(count==window_size)
+        {
+            sl=receiver_ack(i,wz);
+            if(sl!=-1)
+            resend(sl);
+            count=1;
+        }
+        count++;
+    }
+}
+    
+
+
+int main()
+{
+	int window_size,n;
+	printf(“Enter total frame size\n”);
+	scanf("%d",&n);
+	printf("enter window_size");
+	scanf("%d",&window_size);
+	sender(n,window_size);
+return 0;
+}
+/*output
+Enter total frame size
+6
+enter window_size3
+sender start sending the frames 
+frame:1 is sender to received 
+ frame:2 is sender to received 
+ frame:3 is sender to received 
+ Frame 1 is received or not if it is received press1 or press  00
+ frame:1 Resended sucessfully 
+frame:4 is sender to received 
+ frame:5 is sender to received 
+ Frame 3 is received or not if it is received press1 or press  01
+ frame:6 is sender to received 
+ */
