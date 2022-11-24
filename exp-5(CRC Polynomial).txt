@@ -1,0 +1,153 @@
+//Experiment5: CRC
+
+//Implement three CRC polynomials CRC12, CRC16 and CRC.
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+int i,j,klen,mlen,ch;
+char input[100],key[30],temp[30],quot[30],rem[30],key1[30];
+void crc1();
+void main()
+{
+
+do{
+printf("\n MENU ");
+printf("\n 1.crc12\n 2.crc16\n 3.any polynomial \n 4.exit\n Enter your option:");
+scanf("%d",&ch);
+switch(ch)
+  {
+  case 1:printf("\n Polynomial data for CRC12 ");
+	 strcpy(input,"1100000001111");
+	 printf("%s",input);
+	 crc1();
+	 break;
+  case 2:printf("\n Polynomial data for CRC16 IBM");
+	 strcpy(input,"11000000000000101");
+	 printf("%s",input);
+	 crc1();
+	 break;
+  case 3:
+	 printf("\n Enter any polynomial data for CRC :");
+	 scanf("%s",input);
+	 printf("%s",input);
+	 crc1();
+	 break;
+  case 4:
+	exit(1);
+  }
+ }while(1);
+}
+
+ void crc1()
+{
+ printf("\n Enter the value of key i.e Divisior polynomial ");
+ scanf("%s",key);
+ klen=strlen(key);    //Taking length of key
+ mlen=strlen(input);  //Taking length of data as Input
+ printf("lenth of key: %d  length of message:  %d",klen,mlen);
+ printf("\n Initial Redundancy bits(zeros) based on the length of Divisor\n");
+ for(i=0;i<klen-1;i++)
+ {
+    input[mlen+i]='0';
+    printf("%c",input[mlen+i]);
+ }
+ //Considering the first occuring digits based on divisor length
+ printf("\n Take First N digits for division process:");
+ for(i=0;i<klen;i++)
+     {
+	temp[i]=input[i];
+	printf("%c",temp[i]);
+     }
+ strcpy(key1,key);
+ for(i=0;i<mlen;i++)
+   {
+    quot[i]=temp[0];  //Take first digit from input data & place in quotient
+    if(quot[i]=='0')  // check if first digit is 0, then place 0's in divisor
+       for(j=0;j<klen;j++)
+	   key[j]='0';
+    else
+       for(j=0;j<klen;j++)    // if not, keep original divisor bits in key
+	  key[j]=key1[j];
+  // Perform XOR Operation
+  for(j=klen-1;j>0;j--)     // From 4th bit to 1st bit
+      {
+	if(temp[j]==key[j])  //checking both bits of data & divisor bits
+	   rem[j-1]='0';    // If both bits are same, place 0
+	else
+	   rem[j-1]='1';    //If not, place 1
+      }
+  rem[klen-1]=input[i+klen]; //Take bits from dividend & add to partial remainder
+  strcpy(temp,rem);       // Place the partial remainder bits into data for next division
+   }
+ strcpy(rem,temp);        //Final data as CRC bits i.e remainder bits
+ printf("\n Quotient is");
+ for(i=0;i<mlen;i++)
+    printf("%c",quot[i]);   // Final Quotient bits
+ printf("\n Remainder is");
+ for(i=0;i<klen-1;i++)
+    printf("%c",rem[i]);    //Final Remainder bits
+ printf("\n Final data is");
+ for(i=0;i<mlen;i++)
+    printf("%c",input[i]);    //Final Code word
+ for(i=0;i<klen-1;i++)
+   printf("%c",rem[i]);       // Final Remainder bits
+ 
+ }
+/*output
+MENU 
+ 1.crc12
+ 2.crc16
+ 3.any polynomial 
+ 4.exit
+ Enter your option:1
+ Polynomial data for CRC12 1100000001111
+ Enter the value of key i.e Divisior polynomial 1011
+ lenth of key: 4  length of message:  13
+ Initial Redundancy bits(zeros) based on the length of Divisor
+000
+ Take First N digits for division process:1100
+ Quotient is1110010110100
+ Remainder is100
+ Final data is1100000001111100
+ MENU 
+ 1.crc12
+ 2.crc16
+ 3.any polynomial 
+ 4.exit
+ Enter your option:2
+ Polynomial data for CRC16 IBM11000000000000101
+ Enter the value of key i.e Divisior polynomial 1100
+ lenth of key: 4  length of message:  17
+ Initial Redundancy bits(zeros) based on the length of Divisor
+000
+ Take First N digits for division process:1100
+ Quotient is10000000000000110
+ Remainder is000
+ Final data is11000000000000101000
+ MENU 
+ 1.crc12
+ 2.crc16
+ 3.any polynomial 
+ 4.exit
+ Enter your option:3
+ Enter any polynomial data for CRC :1100100111001001
+ 1100100111001001
+ Enter the value of key i.e Divisior polynomial 1001
+ lenth of key: 4  length of message:  16
+ Initial Redundancy bits(zeros) based on the length of Divisor
+000
+ Take First N digits for division process:1100
+ Quotient is1101001110111110
+ Remainder is110
+ Final data is1100100111001001110*/
+
+
+
+ 
+
+ 
+
+
+ 
+
